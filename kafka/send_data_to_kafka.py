@@ -2,13 +2,26 @@ import requests
 import kafka
 import logging
 import json
+from datetime import datetime
+from pathlib import Path
 
 
-# create logger instance
+# create logger instance and configure it to write logs to a folder named "logs" in the current directory. The log files should be named with the current date and time (e.g., "app_2024-06-01_12-00-00.log"). 
+
+log_dir = Path("C:\\Users\\Shivani-Parate\\Desktop\\Crypto-pipeline-foundations\\kafka\\logs")
+log_dir.mkdir(exist_ok= True)
+
+timestamp = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+log_file = log_dir/f"app_{timestamp}.log"
+
+
 logging.basicConfig(
-    filename="app.log",
-    level=logging.DEBUG,  # Set the minimum logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+    level=logging.INFO,  # Set the minimum logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
     format="%(asctime)s - %(levelname)s - %(message)s",  # Define the log message format
+    handlers =[
+        logging.FileHandler(log_file),
+        logging.StreamHandler()
+    ]
 )
 logger = logging.getLogger(__name__)
 
